@@ -9,6 +9,8 @@ service TestService {
 	// Sends a greeting
 	rpc SayHello (HelloRequest) returns (HelloReply);
 	rpc SayHellos (HelloRequest) returns (stream HelloReply);
+	rpc SayClientHellos (stream HelloRequest) returns (HelloReply);
+
 }
 
 // The request message containing the user's name.

@@ -9,11 +9,11 @@ namespace Client
 {
     class Program
     {
-        static async System.Threading.Tasks.Task Main(string[] args)
+        static async Task Main(string[] args)
         {
             using var channel = GrpcChannel.ForAddress("https://localhost:5001");
             var client = new TestService.TestServiceClient(channel);
-            await ServerStreamingAsync(client);
+            await ClientStreamingAsync(client);
             Console.ReadKey();
         }
 
@@ -42,6 +42,20 @@ namespace Client
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Stream cancelled.");
             }
+        }
+        private static async Task ClientStreamingAsync(TestService.TestServiceClient client)
+        {
+            using var call = client.SayClientHellos();
+            for (var i = 0; i < 10; i++)
+            {
+                await call.RequestStream.WriteAsync(new HelloRequest()
+                {
+                    Name = "mostafa : " + i
+                });
+            }
+            await call.RequestStream.CompleteAsync();
+            var response = await call;
+            Console.WriteLine(response.Message);
         }
     }
 }
