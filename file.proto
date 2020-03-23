@@ -10,7 +10,7 @@ service TestService {
 	rpc SayHello (HelloRequest) returns (HelloReply);
 	rpc SayHellos (HelloRequest) returns (stream HelloReply);
 	rpc SayClientHellos (stream HelloRequest) returns (HelloReply);
-
+	rpc BiDirectionalStreaming (stream HelloRequest) returns (stream HelloReply);
 }
 
 // The request message containing the user's name.
